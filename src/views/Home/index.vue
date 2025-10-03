@@ -1,14 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div>我是home页面</div>
+  <div class="container">
+    <HomeCategory />
+    <HomeBanner />
+  </div>
+  <HomeNew />
+  <homeProduct />
 </template>
-
-<script>
-export default {
-
-}
+<script setup>
+import HomeCategory from '@/views/Home/components/HomeCategory.vue'
+import HomeBanner from '@/views/Home/components/HomeBanner.vue'
+import HomeNew from '@/views/Home/components/HomeNew.vue'
+import HomeProduct from '@/views/Home/components/HomeProduct.vue'
 </script>
 
-<style>
-
-</style>
+<style></style>
