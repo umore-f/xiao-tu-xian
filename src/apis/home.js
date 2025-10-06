@@ -15,3 +15,7 @@ export const findNewAPI = () => {
 export const getHotAPI = () => {
     return httpInstance({url:'home/hot'})
 }
+// 获取所有商品模块
+export const getGoodsAPI = () => {
+    return httpInstance({url:'home/goods'})
+}
