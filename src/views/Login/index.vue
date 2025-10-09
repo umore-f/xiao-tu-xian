@@ -1,9 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { ref } from 'vue'
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
+import { useRouter } from "vue-router";
+import { loginAPI } from "@/apis/user.js";
+const router = useRouter();
 // 表单数据对象
 const userInfo = ref({
-  account: '1311111111',
+  account: 'xiaotuxian001',
   password: '123456',
   agree: true
 })
@@ -25,8 +30,26 @@ const rules = {
     }
   ]
 }
+const formRef = ref(null)
+const doLogin = () => {
+  const { account, password } = userInfo.value;
+  // 调用实例方法
+  formRef.value.validate(async (valid) => {
+    // valid: 所有表单都通过校验  才为true
+    console.log(valid);
+    // 以valid做为判断条件 如果通过校验才执行登录逻辑
+    if (valid) {
+      // TODO LOGIN
+      await loginAPI({ account, password });
+      // 这里其实很奇怪，不知道为什么登录出错就不执行这个了
+      // 1. 提示用户
+      ElMessage({ type: "success", message: "登录成功" });
+      // 2. 跳转首页
+      router.replace({ path: "/" });
+    }
+  });
 
-
+}
 </script>
 
 <template>
@@ -53,10 +76,10 @@ const rules = {
             <el-form ref="formRef" :model="userInfo" :rules="rules" label-position="right" label-width="60px"
               status-icon>
               <el-form-item prop="account" label="账户">
-                <el-input v-model="userInfo.account"/>
+                <el-input v-model="userInfo.account" />
               </el-form-item>
               <el-form-item prop="password" label="密码">
-                <el-input v-model="userInfo.password"/>
+                <el-input v-model="userInfo.password" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
                 <el-checkbox v-model="userInfo.agree" size="large">
