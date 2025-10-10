@@ -14,7 +14,6 @@ const goods = ref({})
 const route = useRoute()
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
-  console.log(res);
   goods.value = res.result
 }
 onMounted(() => getGoods())
@@ -22,7 +21,6 @@ onMounted(() => getGoods())
 // sku规格被操作时
 let skuObj = {}
 const skuChange = (sku) => {
-  console.log(sku);
   skuObj = sku
 }
 

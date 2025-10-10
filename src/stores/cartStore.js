@@ -22,6 +22,8 @@ export const useCartStore = defineStore('cart', () => {
   // 删除购物车
   const delCart = (skuId) => {
     const idx = cartList.value.findIndex((item)=>{skuId===item.skuId})
+    console.log(idx);
+    console.log(skuId);
     cartList.value.splice(idx,1)
   }
   // 计算属性
