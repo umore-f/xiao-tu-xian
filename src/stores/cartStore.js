@@ -11,7 +11,7 @@ export const useCartStore = defineStore('cart', () => {
     // 添加过 - count + 1
     // 没添加过 - 直接push
     const item = cartList.value.find((item) => goods.skuId === item.skuId)
-    if(item) {
+    if (item) {
       // 找到了
       item.count++
     } else {
@@ -21,16 +21,20 @@ export const useCartStore = defineStore('cart', () => {
   }
   // 删除购物车
   const delCart = (skuId) => {
-    const idx = cartList.value.findIndex((item)=>{skuId===item.skuId})
-    console.log(idx);
-    console.log(skuId);
-    cartList.value.splice(idx,1)
+    const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+    cartList.value.splice(idx, 1)
+  }
+  // 单选功能
+  const singleCheck = (skuId, selected) => {
+    // 通过skuId找到要修改的那一项 然后把它的selected修改为传过来的selected
+    const item = cartList.value.find((item) => item.skuId === skuId)
+    item.selected = selected
   }
   // 计算属性
   // 1.总的数量 所有项的count之和
-  const allCount = computed(() => cartList.value.reduce((a,c) => a + c.count,0))
+  const allCount = computed(() => cartList.value.reduce((a, c) => a + c.count, 0))
   // 2.总价 所有项的count*price之和
-  const allPrice = computed(() => cartList.value.reduce((a,c) => a + c.count*c.price,0))
+  const allPrice = computed(() => cartList.value.reduce((a, c) => a + c.count * c.price, 0))
 
   return {
     cartList,
@@ -38,7 +42,8 @@ export const useCartStore = defineStore('cart', () => {
     delCart,
     allCount,
     allPrice,
+    singleCheck,
   }
-},{
-  persist:true
+}, {
+  persist: true
 })
