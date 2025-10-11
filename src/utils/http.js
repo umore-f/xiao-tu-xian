@@ -2,12 +2,12 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/userStore";
 import {useRouter} from 'vue-router'
 
 const httpInstance = axios.create({
   baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-  timeout: 8000
+  timeout: 16000
 })
 
 // 拦截器
