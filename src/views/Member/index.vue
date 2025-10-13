@@ -1,5 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-<script setup> </script>
+<script setup>
+
+</script>
 
 <template>
   <div class="container">
