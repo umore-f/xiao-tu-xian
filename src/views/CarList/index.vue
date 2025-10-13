@@ -2,7 +2,6 @@
 <script setup>
 import {useCartStore} from '@/stores/cartStore'
 const cartStore = useCartStore()
-console.log(cartStore.cartList);
 
 // 单选回调
 const singleCheck = (i, selected) => {

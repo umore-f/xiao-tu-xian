@@ -1,9 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { getCheckoutInfoAPI } from '@/apis/checkout'
-
-
+import { getCheckoutInfoAPI, createOrderAPI } from '@/apis/checkout'
+import {useRouter} from 'vue-router'
 import { onMounted, ref } from 'vue'
+import {useCartStore} from '@/stores/cartStore'
+const cartStore = useCartStore()
+const router = useRouter()
 const checkInfo = ref({})  // 订单对象
 const curAddress = ref({})  // 地址对象
 
@@ -23,10 +25,36 @@ const activeAddres = ref({})
 const switchAddres = (item) => {
   activeAddres.value = item
 }
+// 订单确认
 const confirm = () => {
   curAddress.value = { ...activeAddres.value }
   activeAddres.value = {}
   toggleFlag.value = false
+}
+
+// 创建订单
+const createOrder = async () => {
+  const res = await createOrderAPI({
+    deliveryTimeType: 1,
+    payType: 1,
+    payChannel: 1,
+    buyerMessage: '',
+    goods: checkInfo.value.goods.map(item => {
+      return {
+        skuId: item.skuId,
+        count: item.count
+      }
+    }),
+    addressId: curAddress.value.id
+  })
+  const orderId = res.result.id
+  router.push({
+    path: '/pay',
+    query: {
+      id: orderId
+    }
+  })
+  cartStore.updateNewList()
 }
 
 </script>
@@ -123,7 +151,7 @@ const confirm = () => {
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <el-button type="primary" size="large">提交订单</el-button>
+          <el-button type="primary" size="large" @click="createOrder">提交订单</el-button>
         </div>
       </div>
     </div>
