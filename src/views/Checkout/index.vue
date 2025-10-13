@@ -1,8 +1,19 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import {} from '@/apis/'
-const checkInfo = {}  // 订单对象
-const curAddress = {}  // 地址对象
+import { getCheckoutInfoAPI } from '@/apis/checkout'
+// import {useCartStore} from '@/stores/cartStore'
+
+import {onMounted, ref} from 'vue'
+const checkInfo = ref({})  // 订单对象
+const curAddress = ref({})  // 地址对象
+// const cartStore = useCartStore()/
+const getCheckInfo = async () => {
+  const res = await getCheckoutInfoAPI()
+  checkInfo.value = res.result
+  const item = checkInfo.value.userAddresses.find(item=>item.isDefault === 0)
+  curAddress.value = item
+}
+onMounted(()=>{getCheckInfo()})
 
 </script>
 
@@ -42,7 +53,7 @@ const curAddress = {}  // 地址对象
               </tr>
             </thead>
             <tbody>
-              <tr v-for="i in checkInfo.goods" :key="i.id">
+              <tr v-for="i in checkInfo?.goods" :key="i.id">
                 <td>
                   <a href="javascript:;" class="info">
                     <img :src="i.picture" alt="">
@@ -98,7 +109,7 @@ const curAddress = {}  // 地址对象
         </div>
         <!-- 提交订单 -->
         <div class="submit">
-          <el-button type="primary" size="large" >提交订单</el-button>
+          <el-button type="primary" size="large">提交订单</el-button>
         </div>
       </div>
     </div>
