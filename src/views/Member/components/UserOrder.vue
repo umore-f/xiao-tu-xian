@@ -22,12 +22,20 @@ const params = ref({
 const userOrder = async () => {
   const res = await getUserOrder(params.value)
   orderList.value = res.result.items
-  // total.value = res.result.count
+  // 存入总条数
+  total.value = res.result.counts
 }
-onMounted(()=>userOrder())
+onMounted(() => userOrder())
 // tab切换
 const tabChange = (type) => {
   params.value.orderState = type
+  userOrder()
+}
+// 补充总条数
+const total = ref(0)
+// 页数切换
+const pageChange = (page) => {
+  params.value.page = page
   userOrder()
 }
 </script>
@@ -51,7 +59,7 @@ const tabChange = (type) => {
               <!-- 未付款，倒计时时间还有 -->
               <span class="down-time" v-if="order.orderState === 1">
                 <i class="iconfont icon-down-time"></i>
-                <b>付款截止: {{order.countdown}}</b>
+                <b>付款截止: {{ order.countdown }}</b>
               </span>
             </div>
             <div class="body">
@@ -92,8 +100,7 @@ const tabChange = (type) => {
                 <p>在线支付</p>
               </div>
               <div class="column action">
-                <el-button  v-if="order.orderState === 1" type="primary"
-                  size="small">
+                <el-button v-if="order.orderState === 1" type="primary" size="small">
                   立即付款
                 </el-button>
                 <el-button v-if="order.orderState === 3" type="primary" size="small">
@@ -112,7 +119,12 @@ const tabChange = (type) => {
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination
+            :total="total"
+            @current-change="pageChange"
+            :page-size="params.pageSize"
+            background
+            layout="prev, pager, next"/>
           </div>
         </div>
       </div>
